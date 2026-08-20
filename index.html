@@ -1,0 +1,1556 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sri Devi Mandir — Mobile App</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Nunito:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --br: #8b3a2a;
+        --br2: #c06030;
+        --br3: #d4892a;
+        --cr: #fdf8f2;
+        --iv: #fff9f5;
+        --bd: #edd9c8;
+        --mu: #8b6a55;
+        --dk: #3a1505;
+        --md: #5a2510;
+      }
+
+      html,
+      body {
+        width: 100%;
+        min-height: 100vh;
+        background: #1a1a1a;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        font-family: "Nunito", sans-serif;
+        padding: 32px 16px 48px;
+      }
+
+      /* ── Page header ── */
+      .page-header {
+        text-align: center;
+        margin-bottom: 28px;
+      }
+      .page-header .eyebrow {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: rgba(192, 96, 48, 0.9);
+        margin-bottom: 8px;
+      }
+      .page-header h1 {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 28px;
+        font-weight: 600;
+        color: #fdf8f2;
+        letter-spacing: 0.3px;
+      }
+      .page-header p {
+        font-size: 13px;
+        color: rgba(253, 248, 242, 0.5);
+        margin-top: 6px;
+      }
+
+      /* ── Phone shell ── */
+      .phone-wrap {
+        position: relative;
+      }
+      .phone {
+        width: 320px;
+        background: #111;
+        border-radius: 50px;
+        padding: 12px;
+        border: 1.5px solid #333;
+        box-shadow:
+          0 40px 80px rgba(0, 0, 0, 0.6),
+          0 0 0 0.5px #444;
+      }
+      .phone-inner {
+        border-radius: 40px;
+        overflow: hidden;
+        background: var(--cr);
+        display: flex;
+        flex-direction: column;
+        height: 660px;
+        position: relative;
+      }
+
+      /* Side buttons */
+      .btn-right {
+        position: absolute;
+        right: -14px;
+        width: 3px;
+        background: #2a2a2a;
+        border-radius: 2px;
+      }
+      .btn-left {
+        position: absolute;
+        left: -14px;
+        width: 3px;
+        background: #2a2a2a;
+        border-radius: 2px;
+      }
+
+      /* ── Status bar ── */
+      .statusbar {
+        height: 50px;
+        background: var(--br);
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        padding: 0 20px 8px;
+        flex-shrink: 0;
+        position: relative;
+      }
+      .dynamic-island {
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 88px;
+        height: 26px;
+        background: #111;
+        border-radius: 20px;
+      }
+      .statusbar .time {
+        color: var(--cr);
+        font-size: 12px;
+        font-weight: 700;
+        z-index: 1;
+      }
+      .statusbar .icons {
+        color: var(--cr);
+        font-size: 12px;
+        font-weight: 700;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      /* ── Top bar ── */
+      .topbar {
+        background: var(--br);
+        padding: 0 16px 16px;
+        flex-shrink: 0;
+      }
+      .topbar-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .topbar h1 {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 20px;
+        font-weight: 600;
+        color: var(--cr);
+        letter-spacing: 0.3px;
+      }
+      .topbar p {
+        font-size: 11px;
+        color: rgba(253, 248, 242, 0.8);
+        margin-top: 2px;
+      }
+      .bell {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        flex-shrink: 0;
+      }
+      .bell i {
+        font-size: 16px;
+        color: var(--cr);
+      }
+
+      /* ── Content ── */
+      .content {
+        flex: 1;
+        overflow-y: auto;
+        padding: 14px 14px 90px;
+        scrollbar-width: none;
+      }
+      .content::-webkit-scrollbar {
+        display: none;
+      }
+      .screen {
+        display: none;
+      }
+      .screen.active {
+        display: block;
+      }
+
+      /* ── Components ── */
+      .hero {
+        background: var(--br);
+        border-radius: 14px;
+        padding: 14px;
+        color: var(--cr);
+        margin-bottom: 14px;
+      }
+      .hero .tag {
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        padding: 2px 10px;
+        font-size: 10px;
+        margin-bottom: 6px;
+      }
+      .hero h3 {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 18px;
+        font-weight: 600;
+      }
+      .hero p {
+        font-size: 11px;
+        opacity: 0.85;
+        margin-top: 3px;
+      }
+      .hero .t {
+        font-size: 12px;
+        font-weight: 700;
+        margin-top: 8px;
+      }
+
+      .stitle {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--md);
+        margin-bottom: 10px;
+      }
+      .card {
+        background: var(--iv);
+        border: 0.5px solid var(--bd);
+        border-radius: 12px;
+        padding: 12px;
+        margin-bottom: 10px;
+      }
+
+      .qgrid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+        margin-bottom: 14px;
+      }
+      .qbtn {
+        background: var(--iv);
+        border: 0.5px solid var(--bd);
+        border-radius: 10px;
+        padding: 12px 8px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+        cursor: pointer;
+        transition: background 0.15s;
+      }
+      .qbtn:hover {
+        background: #f5e8da;
+      }
+      .qbtn i {
+        font-size: 22px;
+        color: var(--br2);
+      }
+      .qbtn span {
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--md);
+        text-align: center;
+      }
+
+      .wi {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        padding: 8px 0;
+        border-bottom: 0.5px solid var(--bd);
+      }
+      .wi:last-child {
+        border-bottom: none;
+      }
+      .wdot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--br2);
+        flex-shrink: 0;
+      }
+      .winfo {
+        flex: 1;
+      }
+      .winfo h4 {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--dk);
+      }
+      .winfo p {
+        font-size: 10px;
+        color: var(--mu);
+      }
+      .wt {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--br);
+      }
+
+      .ec {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      .ed {
+        background: var(--br);
+        border-radius: 8px;
+        padding: 5px 8px;
+        text-align: center;
+        min-width: 38px;
+        flex-shrink: 0;
+      }
+      .ed .day {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--cr);
+        line-height: 1;
+      }
+      .ed .mon {
+        font-size: 9px;
+        color: #ffcba0;
+        text-transform: uppercase;
+        font-weight: 700;
+      }
+      .ei h4 {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--dk);
+      }
+      .ei p {
+        font-size: 11px;
+        color: var(--mu);
+        margin-top: 2px;
+      }
+      .emeta {
+        display: flex;
+        gap: 8px;
+        margin-top: 4px;
+      }
+      .emeta span {
+        font-size: 10px;
+        color: #a07060;
+        display: flex;
+        align-items: center;
+        gap: 2px;
+      }
+      .emeta i {
+        font-size: 12px;
+      }
+      .pill {
+        display: inline-block;
+        background: #ffede0;
+        color: var(--br);
+        border-radius: 20px;
+        padding: 2px 7px;
+        font-size: 9px;
+        font-weight: 700;
+        margin-top: 4px;
+      }
+
+      /* Donate */
+      .dh {
+        background: var(--br);
+        border-radius: 14px;
+        padding: 14px;
+        color: var(--cr);
+        margin-bottom: 14px;
+      }
+      .dh h3 {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 17px;
+        font-weight: 600;
+      }
+      .dh p {
+        font-size: 11px;
+        opacity: 0.85;
+        margin-top: 3px;
+      }
+      .dcats {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 7px;
+        margin-top: 10px;
+      }
+      .dc {
+        background: rgba(255, 255, 255, 0.14);
+        border-radius: 8px;
+        padding: 10px;
+        cursor: pointer;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: background 0.2s;
+      }
+      .dc.sel {
+        background: rgba(255, 255, 255, 0.28);
+        border-color: rgba(255, 255, 255, 0.45);
+      }
+      .dc h4 {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--cr);
+      }
+      .dc p {
+        font-size: 10px;
+        opacity: 0.75;
+        color: var(--cr);
+        margin-top: 1px;
+      }
+      .ag {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 6px;
+        margin-bottom: 12px;
+      }
+      .ab {
+        background: var(--iv);
+        border: 0.5px solid var(--bd);
+        border-radius: 8px;
+        padding: 9px;
+        text-align: center;
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--br);
+        cursor: pointer;
+        transition: all 0.15s;
+      }
+      .ab.sel {
+        background: var(--br);
+        color: var(--cr);
+        border-color: var(--br);
+      }
+      .tr-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: var(--iv);
+        border: 0.5px solid var(--bd);
+        border-radius: 10px;
+        padding: 10px 12px;
+        margin-bottom: 12px;
+      }
+      .tr-row h4 {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--dk);
+      }
+      .tr-row p {
+        font-size: 10px;
+        color: var(--mu);
+      }
+      .trk {
+        width: 38px;
+        height: 20px;
+        background: #d0c0b0;
+        border-radius: 10px;
+        position: relative;
+        cursor: pointer;
+        transition: background 0.2s;
+        flex-shrink: 0;
+      }
+      .trk.on {
+        background: var(--br);
+      }
+      .trk .th {
+        width: 16px;
+        height: 16px;
+        background: var(--cr);
+        border-radius: 50%;
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        transition: left 0.2s;
+      }
+      .trk.on .th {
+        left: 20px;
+      }
+      .dbtn {
+        width: 100%;
+        background: var(--br);
+        color: var(--cr);
+        border: none;
+        border-radius: 10px;
+        padding: 13px;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        font-family: "Nunito", sans-serif;
+        transition: background 0.15s;
+      }
+      .dbtn:hover {
+        background: var(--md);
+      }
+
+      /* Gallery */
+      .gg {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 7px;
+        margin-bottom: 14px;
+      }
+      .gi {
+        border-radius: 10px;
+        overflow: hidden;
+        position: relative;
+        cursor: pointer;
+      }
+      .gt {
+        width: 100%;
+        height: 110px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 38px;
+      }
+      .gt.tall {
+        height: 227px;
+      }
+      .gl {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(transparent, rgba(90, 37, 16, 0.82));
+        padding: 6px 8px;
+        color: var(--cr);
+        font-size: 10px;
+        font-weight: 700;
+      }
+      .filtrow {
+        display: flex;
+        gap: 6px;
+        margin-bottom: 12px;
+        overflow-x: auto;
+        padding-bottom: 3px;
+      }
+      .filtrow::-webkit-scrollbar {
+        display: none;
+      }
+      .ftag {
+        display: inline-block;
+        background: #ffede0;
+        color: var(--br);
+        border-radius: 20px;
+        padding: 3px 10px;
+        font-size: 10px;
+        font-weight: 700;
+        white-space: nowrap;
+        cursor: pointer;
+      }
+      .ftag.off {
+        background: var(--iv);
+        color: var(--mu);
+        border: 0.5px solid var(--bd);
+      }
+
+      /* About */
+      .ab2 {
+        background: var(--iv);
+        border: 0.5px solid var(--bd);
+        border-radius: 12px;
+        padding: 13px;
+        margin-bottom: 10px;
+      }
+      .ab2 h3 {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--md);
+        margin-bottom: 8px;
+      }
+      .ar {
+        display: flex;
+        align-items: flex-start;
+        gap: 9px;
+        padding: 7px 0;
+        border-bottom: 0.5px solid var(--bd);
+      }
+      .ar:last-child {
+        border-bottom: none;
+      }
+      .ar i {
+        font-size: 16px;
+        color: var(--br2);
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+      .ar h4 {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--dk);
+      }
+      .ar p {
+        font-size: 11px;
+        color: var(--mu);
+        margin-top: 1px;
+      }
+      .hg {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 3px 10px;
+        margin-top: 5px;
+      }
+      .hd {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--md);
+      }
+      .ht {
+        font-size: 11px;
+        color: var(--mu);
+      }
+      .mission {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 14px;
+        color: var(--md);
+        line-height: 1.65;
+        font-style: italic;
+        text-align: center;
+      }
+      .orn {
+        text-align: center;
+        color: var(--br2);
+        font-size: 14px;
+        margin: 6px 0;
+      }
+
+      /* Notifications */
+      .ni {
+        display: flex;
+        gap: 9px;
+        padding: 8px 0;
+        border-bottom: 0.5px solid var(--bd);
+      }
+      .ni:last-child {
+        border-bottom: none;
+      }
+      .nd {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--br2);
+        flex-shrink: 0;
+        margin-top: 3px;
+      }
+      .nd.r {
+        background: #d0c0b0;
+      }
+      .ni h4 {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--dk);
+      }
+      .ni p {
+        font-size: 11px;
+        color: var(--mu);
+        margin-top: 2px;
+      }
+      .ni time {
+        font-size: 10px;
+        color: #b07050;
+        display: block;
+        margin-top: 3px;
+      }
+      .nsec {
+        font-size: 10px;
+        font-weight: 700;
+        color: #b07050;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin: 12px 0 7px;
+      }
+
+      /* ── Morph dock ── */
+      .dock-area {
+        position: absolute;
+        bottom: 14px;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: center;
+        pointer-events: none;
+      }
+      .dock {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        background: rgba(20, 8, 4, 0.88);
+        border: 0.5px solid rgba(255, 255, 255, 0.13);
+        border-radius: 9999px;
+        padding: 5px;
+        pointer-events: all;
+        backdrop-filter: blur(12px);
+      }
+      .di {
+        display: flex;
+        align-items: center;
+        border-radius: 9999px;
+        padding: 7px 10px;
+        cursor: pointer;
+        transition:
+          background 0.22s ease,
+          gap 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
+        overflow: hidden;
+        white-space: nowrap;
+        flex-shrink: 0;
+        gap: 0;
+      }
+      .di i {
+        font-size: 18px;
+        color: rgba(253, 232, 210, 0.5);
+        transition: color 0.22s;
+        flex-shrink: 0;
+        display: block;
+        width: 18px;
+        height: 18px;
+        line-height: 18px;
+      }
+      .di .lbl {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--cr);
+        max-width: 0;
+        opacity: 0;
+        overflow: hidden;
+        transition:
+          max-width 0.32s cubic-bezier(0.34, 1.56, 0.64, 1),
+          opacity 0.18s ease,
+          margin-left 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
+        margin-left: 0;
+        pointer-events: none;
+        font-family: "Nunito", sans-serif;
+      }
+      .di:hover {
+        background: rgba(255, 255, 255, 0.1);
+        gap: 5px;
+      }
+      .di:hover i {
+        color: rgba(253, 232, 210, 0.9);
+      }
+      .di:hover .lbl {
+        max-width: 70px;
+        opacity: 1;
+      }
+      .di.active {
+        background: var(--br2);
+      }
+      .di.active i {
+        color: var(--cr);
+      }
+      .di.active .lbl {
+        max-width: 70px;
+        opacity: 1;
+      }
+      .di.active:hover {
+        background: #a85020;
+      }
+      .dsep {
+        width: 0.5px;
+        height: 16px;
+        background: rgba(255, 255, 255, 0.15);
+        margin: 0 2px;
+        flex-shrink: 0;
+      }
+
+      /* Home indicator */
+      .home-ind {
+        width: 90px;
+        height: 4px;
+        background: #333;
+        border-radius: 2px;
+        margin: 8px auto 4px;
+      }
+
+      /* ── Splash ── */
+      .splash {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          160deg,
+          var(--br) 0%,
+          var(--br2) 55%,
+          var(--br3) 100%
+        );
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-radius: 40px;
+        z-index: 99;
+        transition: opacity 0.6s ease;
+      }
+      .splash.gone {
+        opacity: 0;
+        pointer-events: none;
+      }
+      .splash-icon {
+        font-size: 52px;
+        margin-bottom: 16px;
+      }
+      .splash h2 {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 26px;
+        font-weight: 600;
+        color: var(--cr);
+        letter-spacing: 0.5px;
+      }
+      .splash p {
+        font-size: 13px;
+        color: rgba(253, 248, 242, 0.75);
+        margin-top: 5px;
+      }
+      .splash-dots {
+        display: flex;
+        gap: 7px;
+        margin-top: 28px;
+      }
+      .splash-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.35);
+      }
+      .splash-dot.a {
+        background: var(--cr);
+      }
+
+      /* ── Portfolio badge ── */
+      .badge-row {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .badge {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(255, 255, 255, 0.07);
+        border: 0.5px solid rgba(255, 255, 255, 0.15);
+        border-radius: 20px;
+        padding: 5px 12px;
+        font-size: 11px;
+        font-weight: 600;
+        color: rgba(253, 248, 242, 0.7);
+      }
+      .badge i {
+        font-size: 13px;
+        color: var(--br2);
+      }
+
+      @media (max-width: 380px) {
+        .phone {
+          width: 290px;
+        }
+        .phone-inner {
+          height: 600px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-header">
+      <div class="eyebrow">Concept Project &middot; UX / Product Design</div>
+      <h1>Sri Devi Mandir Mobile App</h1>
+      <p>
+        A community app for a local Hindu temple &mdash; designed from scratch
+      </p>
+    </div>
+
+    <div class="phone-wrap">
+      <!-- Side buttons -->
+      <div class="btn-right" style="top: 100px; height: 60px"></div>
+      <div class="btn-right" style="top: 175px; height: 50px"></div>
+      <div class="btn-left" style="top: 90px; height: 36px"></div>
+      <div class="btn-left" style="top: 140px; height: 60px"></div>
+      <div class="btn-left" style="top: 215px; height: 60px"></div>
+
+      <div class="phone">
+        <div class="phone-inner">
+          <!-- Splash -->
+          <div class="splash" id="splash">
+            <div class="splash-icon">&#x1FA94;</div>
+            <h2>Sri Devi Mandir</h2>
+            <p>Peace &middot; Devotion &middot; Community</p>
+            <div class="splash-dots">
+              <div class="splash-dot a"></div>
+              <div class="splash-dot"></div>
+              <div class="splash-dot"></div>
+            </div>
+          </div>
+
+          <!-- Status bar -->
+          <div class="statusbar">
+            <div class="dynamic-island"></div>
+            <span class="time">9:41</span>
+            <div class="icons">
+              <i
+                class="ti ti-wifi"
+                style="font-size: 12px"
+                aria-hidden="true"
+              ></i>
+              <i
+                class="ti ti-battery-2"
+                style="font-size: 12px"
+                aria-hidden="true"
+              ></i>
+            </div>
+          </div>
+
+          <!-- Top bar -->
+          <div class="topbar">
+            <div class="topbar-row">
+              <div>
+                <h1>&#x1FA94; Sri Devi Mandir</h1>
+                <p>Good morning, devotee</p>
+              </div>
+              <div
+                class="bell"
+                onclick="show('notif')"
+                aria-label="Notifications"
+              >
+                <i class="ti ti-bell" aria-hidden="true"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Scrollable content -->
+          <div class="content">
+            <!-- HOME -->
+            <div class="screen active" id="s-home">
+              <div class="hero">
+                <div class="tag">Next Festival</div>
+                <h3>Diwali Celebration 2025</h3>
+                <p>
+                  Grand festival of lights with prayers, fireworks &amp; feast
+                </p>
+                <div class="t">&#x1F56F; Saturday, Oct 18 &middot; 6:00 PM</div>
+              </div>
+              <p class="stitle">Quick Access</p>
+              <div class="qgrid">
+                <div
+                  class="qbtn"
+                  onclick="nav('events', document.getElementById('d-events'))"
+                >
+                  <i class="ti ti-calendar-event" aria-hidden="true"></i
+                  ><span>Events &amp; Calendar</span>
+                </div>
+                <div
+                  class="qbtn"
+                  onclick="nav('donate', document.getElementById('d-donate'))"
+                >
+                  <i class="ti ti-heart" aria-hidden="true"></i
+                  ><span>Donate</span>
+                </div>
+                <div
+                  class="qbtn"
+                  onclick="nav('gallery', document.getElementById('d-gallery'))"
+                >
+                  <i class="ti ti-photo" aria-hidden="true"></i
+                  ><span>Gallery</span>
+                </div>
+                <div
+                  class="qbtn"
+                  onclick="nav('about', document.getElementById('d-about'))"
+                >
+                  <i class="ti ti-info-circle" aria-hidden="true"></i
+                  ><span>About Temple</span>
+                </div>
+              </div>
+              <p class="stitle">Weekly Schedule</p>
+              <div class="card">
+                <div class="wi">
+                  <div class="wdot"></div>
+                  <div class="winfo">
+                    <h4>Morning Aarti</h4>
+                    <p>Daily prayers &amp; offerings</p>
+                  </div>
+                  <div class="wt">6:00 AM</div>
+                </div>
+                <div class="wi">
+                  <div class="wdot" style="background: #d4892a"></div>
+                  <div class="winfo">
+                    <h4>Sunday Puja Service</h4>
+                    <p>Weekly congregation</p>
+                  </div>
+                  <div class="wt">10:00 AM</div>
+                </div>
+                <div class="wi">
+                  <div class="wdot" style="background: #d4892a"></div>
+                  <div class="winfo">
+                    <h4>Bhajan &amp; Kirtan</h4>
+                    <p>Devotional singing</p>
+                  </div>
+                  <div class="wt">6:00 PM</div>
+                </div>
+                <div class="wi">
+                  <div class="wdot"></div>
+                  <div class="winfo">
+                    <h4>Evening Aarti</h4>
+                    <p>Closing prayers</p>
+                  </div>
+                  <div class="wt">7:30 PM</div>
+                </div>
+              </div>
+              <p class="stitle">Upcoming Events</p>
+              <div class="card">
+                <div class="ec">
+                  <div class="ed">
+                    <div class="day">18</div>
+                    <div class="mon">Oct</div>
+                  </div>
+                  <div class="ei">
+                    <h4>Diwali Celebration</h4>
+                    <p>Festival of lights</p>
+                    <div class="emeta">
+                      <span
+                        ><i class="ti ti-clock" aria-hidden="true"></i>6:00
+                        PM</span
+                      ><span
+                        ><i class="ti ti-map-pin" aria-hidden="true"></i>Main
+                        Hall</span
+                      >
+                    </div>
+                    <span class="pill">Festival</span>
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="ec">
+                  <div class="ed">
+                    <div class="day">26</div>
+                    <div class="mon">Oct</div>
+                  </div>
+                  <div class="ei">
+                    <h4>Yoga &amp; Meditation</h4>
+                    <p>Open to all members</p>
+                    <div class="emeta">
+                      <span
+                        ><i class="ti ti-clock" aria-hidden="true"></i>9:00
+                        AM</span
+                      ><span
+                        ><i class="ti ti-map-pin" aria-hidden="true"></i
+                        >Community Rm</span
+                      >
+                    </div>
+                    <span class="pill">Workshop</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- EVENTS -->
+            <div class="screen" id="s-events">
+              <div class="hero">
+                <div class="tag">Highlight</div>
+                <h3>Navratri &mdash; 9 Nights of Worship</h3>
+                <p>Garba, prayers &amp; prasad. All families welcome.</p>
+                <div class="t">
+                  &#x1F56F; Oct 2&ndash;10 &middot; 7:00 PM nightly
+                </div>
+              </div>
+              <p class="stitle">October Events</p>
+              <div class="card">
+                <div class="ec">
+                  <div class="ed">
+                    <div class="day">2</div>
+                    <div class="mon">Oct</div>
+                  </div>
+                  <div class="ei">
+                    <h4>Navratri begins</h4>
+                    <p>Opening ceremony &amp; Garba night</p>
+                    <div class="emeta">
+                      <span
+                        ><i class="ti ti-clock" aria-hidden="true"></i>7:00
+                        PM</span
+                      ><span
+                        ><i class="ti ti-map-pin" aria-hidden="true"></i
+                        >Courtyard</span
+                      >
+                    </div>
+                    <span class="pill">Festival</span>
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="ec">
+                  <div class="ed">
+                    <div class="day">12</div>
+                    <div class="mon">Oct</div>
+                  </div>
+                  <div class="ei">
+                    <h4>Volunteering Day</h4>
+                    <p>Diwali decorations prep</p>
+                    <div class="emeta">
+                      <span
+                        ><i class="ti ti-clock" aria-hidden="true"></i>10:00
+                        AM</span
+                      ><span
+                        ><i class="ti ti-users" aria-hidden="true"></i>All
+                        welcome</span
+                      >
+                    </div>
+                    <span class="pill">Community</span>
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="ec">
+                  <div class="ed">
+                    <div class="day">18</div>
+                    <div class="mon">Oct</div>
+                  </div>
+                  <div class="ei">
+                    <h4>Diwali Celebration</h4>
+                    <p>Lamps, fireworks &amp; feast</p>
+                    <div class="emeta">
+                      <span
+                        ><i class="ti ti-clock" aria-hidden="true"></i>6:00
+                        PM</span
+                      ><span
+                        ><i class="ti ti-map-pin" aria-hidden="true"></i>Main
+                        Hall</span
+                      >
+                    </div>
+                    <span class="pill">Festival</span>
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="ec">
+                  <div class="ed">
+                    <div class="day">26</div>
+                    <div class="mon">Oct</div>
+                  </div>
+                  <div class="ei">
+                    <h4>Yoga &amp; Meditation</h4>
+                    <p>For members &amp; visitors</p>
+                    <div class="emeta">
+                      <span
+                        ><i class="ti ti-clock" aria-hidden="true"></i>9:00
+                        AM</span
+                      ><span
+                        ><i class="ti ti-map-pin" aria-hidden="true"></i
+                        >Community Rm</span
+                      >
+                    </div>
+                    <span class="pill">Workshop</span>
+                  </div>
+                </div>
+              </div>
+              <p class="stitle">External Links</p>
+              <div class="qgrid">
+                <div class="qbtn">
+                  <i class="ti ti-external-link" aria-hidden="true"></i
+                  ><span>Temple Website</span>
+                </div>
+                <div class="qbtn">
+                  <i class="ti ti-video" aria-hidden="true"></i
+                  ><span>Livestream</span>
+                </div>
+                <div class="qbtn">
+                  <i class="ti ti-clipboard-list" aria-hidden="true"></i
+                  ><span>Volunteer Sign-up</span>
+                </div>
+                <div class="qbtn">
+                  <i class="ti ti-share" aria-hidden="true"></i
+                  ><span>Share Events</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- DONATE -->
+            <div class="screen" id="s-donate">
+              <div class="dh">
+                <h3>Support the Temple</h3>
+                <p>Your generosity keeps the sacred flame lit &#x1F64F;</p>
+                <div class="dcats">
+                  <div class="dc sel" onclick="selCat(this)">
+                    <h4>&#x1F6D5; General Fund</h4>
+                    <p>Daily operations</p>
+                  </div>
+                  <div class="dc" onclick="selCat(this)">
+                    <h4>&#x1F38A; Special Events</h4>
+                    <p>Festivals &amp; pujas</p>
+                  </div>
+                  <div class="dc" onclick="selCat(this)">
+                    <h4>&#x1F91D; Charity</h4>
+                    <p>Community outreach</p>
+                  </div>
+                  <div class="dc" onclick="selCat(this)">
+                    <h4>&#x1F3DB; Temple Upkeep</h4>
+                    <p>Maintenance</p>
+                  </div>
+                </div>
+              </div>
+              <p class="stitle">Select Amount</p>
+              <div class="ag">
+                <div class="ab" onclick="selAmt(this)">$11</div>
+                <div class="ab sel" onclick="selAmt(this)">$25</div>
+                <div class="ab" onclick="selAmt(this)">$51</div>
+                <div class="ab" onclick="selAmt(this)">$101</div>
+                <div class="ab" onclick="selAmt(this)">$251</div>
+                <div class="ab" onclick="selAmt(this)">Custom</div>
+              </div>
+              <div class="tr-row">
+                <div>
+                  <h4>Monthly Recurring</h4>
+                  <p>Automatic monthly donation</p>
+                </div>
+                <div
+                  class="trk"
+                  id="trk"
+                  onclick="this.classList.toggle('on')"
+                  role="switch"
+                  aria-checked="false"
+                >
+                  <div class="th"></div>
+                </div>
+              </div>
+              <button class="dbtn" id="dbtn">
+                Donate $25 &middot; General Fund
+              </button>
+            </div>
+
+            <!-- GALLERY -->
+            <div class="screen" id="s-gallery">
+              <div class="filtrow">
+                <span class="ftag">All</span>
+                <span class="ftag off">Festivals</span>
+                <span class="ftag off">Services</span>
+                <span class="ftag off">Community</span>
+                <span class="ftag off">History</span>
+              </div>
+              <div class="gg">
+                <div class="gi" style="grid-row: span 2">
+                  <div class="gt tall" style="background: #8b3a2a">
+                    &#x1FA94;
+                  </div>
+                  <div class="gl">Diwali 2024</div>
+                </div>
+                <div class="gi">
+                  <div class="gt" style="background: #c06030">&#x1F33A;</div>
+                  <div class="gl">Navratri</div>
+                </div>
+                <div class="gi">
+                  <div class="gt" style="background: #6b4a2a">&#x1F64F;</div>
+                  <div class="gl">Sunday Puja</div>
+                </div>
+                <div class="gi">
+                  <div class="gt" style="background: #5a2510">&#x1F6D5;</div>
+                  <div class="gl">Temple History</div>
+                </div>
+                <div class="gi">
+                  <div class="gt" style="background: #d4892a">&#x1F338;</div>
+                  <div class="gl">Spring Festival</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ABOUT -->
+            <div class="screen" id="s-about">
+              <div class="ab2" style="text-align: center">
+                <div class="orn">&#10022; &#10022; &#10022;</div>
+                <p class="mission">
+                  &ldquo;A sanctuary of peace, devotion, and community &mdash;
+                  welcoming all who seek spiritual connection and
+                  celebration.&rdquo;
+                </p>
+                <div class="orn">&#10022; &#10022; &#10022;</div>
+              </div>
+              <div class="ab2">
+                <h3>Our Story</h3>
+                <div class="ar">
+                  <i class="ti ti-book" aria-hidden="true"></i>
+                  <div>
+                    <h4>Founded 1987</h4>
+                    <p>
+                      Established by devoted families, now serving thousands
+                      across the region
+                    </p>
+                  </div>
+                </div>
+                <div class="ar">
+                  <i class="ti ti-star" aria-hidden="true"></i>
+                  <div>
+                    <h4>Our Mission</h4>
+                    <p>
+                      Preserve traditions, foster community, provide spiritual
+                      education
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="ab2">
+                <h3>Visit Us</h3>
+                <div class="ar">
+                  <i class="ti ti-phone" aria-hidden="true"></i>
+                  <div>
+                    <h4>Phone</h4>
+                    <p>(905) 555-0178</p>
+                  </div>
+                </div>
+              </div>
+              <div class="ab2">
+                <h3>Opening Hours</h3>
+                <div class="hg">
+                  <div class="hd">Mon&ndash;Fri</div>
+                  <div class="ht">
+                    6:00 AM&ndash;12:00 PM, 5:00&ndash;8:30 PM
+                  </div>
+                  <div class="hd">Saturday</div>
+                  <div class="ht">6:00 AM&ndash;9:00 PM</div>
+                  <div class="hd">Sunday</div>
+                  <div class="ht">6:00 AM&ndash;9:30 PM</div>
+                  <div class="hd">Holidays</div>
+                  <div class="ht">Open all day &middot; Special schedule</div>
+                </div>
+              </div>
+              <div class="qgrid">
+                <div class="qbtn">
+                  <i class="ti ti-world" aria-hidden="true"></i
+                  ><span>Website</span>
+                </div>
+                <div class="qbtn">
+                  <i class="ti ti-brand-facebook" aria-hidden="true"></i
+                  ><span>Facebook</span>
+                </div>
+                <div class="qbtn">
+                  <i class="ti ti-brand-instagram" aria-hidden="true"></i
+                  ><span>Instagram</span>
+                </div>
+                <div class="qbtn">
+                  <i class="ti ti-mail" aria-hidden="true"></i
+                  ><span>Contact Us</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- NOTIFICATIONS -->
+            <div class="screen" id="s-notif">
+              <div class="nsec">Today</div>
+              <div class="card">
+                <div class="ni">
+                  <div class="nd"></div>
+                  <div>
+                    <h4>&#x1F38A; Navratri starts in 3 days!</h4>
+                    <p>
+                      Garba nights begin Oct 2nd at 7 PM in the main courtyard.
+                      Colourful attire encouraged!
+                    </p>
+                    <time>2 hours ago</time>
+                  </div>
+                </div>
+                <div class="ni">
+                  <div class="nd"></div>
+                  <div>
+                    <h4>&#x1F4E3; Schedule Change: Morning Aarti</h4>
+                    <p>
+                      Tomorrow&rsquo;s morning aarti is shifted to 6:30 AM due
+                      to special preparations.
+                    </p>
+                    <time>5 hours ago</time>
+                  </div>
+                </div>
+              </div>
+              <div class="nsec">This Week</div>
+              <div class="card">
+                <div class="ni">
+                  <div class="nd r"></div>
+                  <div>
+                    <h4>&#x1F91D; Volunteers Needed for Diwali</h4>
+                    <p>
+                      Sign up to help with decorations, food, and event
+                      coordination.
+                    </p>
+                    <time>Yesterday</time>
+                  </div>
+                </div>
+                <div class="ni">
+                  <div class="nd r"></div>
+                  <div>
+                    <h4>&#x1F49B; Donation Drive Update</h4>
+                    <p>
+                      We&rsquo;ve raised $4,250 toward our Diwali celebration
+                      fund. Thank you!
+                    </p>
+                    <time>2 days ago</time>
+                  </div>
+                </div>
+                <div class="ni">
+                  <div class="nd r"></div>
+                  <div>
+                    <h4>&#x1F4F8; New Gallery Photos Added</h4>
+                    <p>
+                      Photos from last Sunday&rsquo;s Puja service have been
+                      uploaded.
+                    </p>
+                    <time>3 days ago</time>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- /content -->
+
+          <!-- Morph dock -->
+          <div class="dock-area">
+            <nav class="dock" role="navigation" aria-label="Main navigation">
+              <div
+                class="di active"
+                id="d-home"
+                onclick="nav('home', this)"
+                title="Home"
+              >
+                <i class="ti ti-home" aria-hidden="true"></i
+                ><span class="lbl">Home</span>
+              </div>
+              <div
+                class="di"
+                id="d-events"
+                onclick="nav('events', this)"
+                title="Events"
+              >
+                <i class="ti ti-calendar-event" aria-hidden="true"></i
+                ><span class="lbl">Events</span>
+              </div>
+              <div
+                class="di"
+                id="d-donate"
+                onclick="nav('donate', this)"
+                title="Donate"
+              >
+                <i class="ti ti-heart" aria-hidden="true"></i
+                ><span class="lbl">Donate</span>
+              </div>
+              <div class="dsep" role="separator"></div>
+              <div
+                class="di"
+                id="d-gallery"
+                onclick="nav('gallery', this)"
+                title="Gallery"
+              >
+                <i class="ti ti-photo" aria-hidden="true"></i
+                ><span class="lbl">Gallery</span>
+              </div>
+              <div
+                class="di"
+                id="d-about"
+                onclick="nav('about', this)"
+                title="About"
+              >
+                <i class="ti ti-info-circle" aria-hidden="true"></i
+                ><span class="lbl">About</span>
+              </div>
+            </nav>
+          </div>
+        </div>
+        <!-- /phone-inner -->
+        <div class="home-ind"></div>
+      </div>
+      <!-- /phone -->
+    </div>
+    <!-- /phone-wrap -->
+
+    <div class="badge-row">
+      <div class="badge">
+        <i class="ti ti-palette" aria-hidden="true"></i>UX / Product Design
+      </div>
+      <div class="badge">
+        <i class="ti ti-device-mobile" aria-hidden="true"></i>iOS &amp; Android
+      </div>
+      <div class="badge">
+        <i class="ti ti-sparkles" aria-hidden="true"></i>Concept Project
+      </div>
+    </div>
+
+    <script>
+      // Splash
+      setTimeout(
+        () => document.getElementById("splash").classList.add("gone"),
+        1800,
+      );
+
+      function show(id) {
+        document
+          .querySelectorAll(".screen")
+          .forEach((s) => s.classList.remove("active"));
+        const el = document.getElementById("s-" + id);
+        if (el) el.classList.add("active");
+        document.querySelector(".content").scrollTop = 0;
+      }
+
+      function nav(id, el) {
+        show(id);
+        document
+          .querySelectorAll(".di")
+          .forEach((d) => d.classList.remove("active"));
+        el.classList.add("active");
+      }
+
+      function selCat(el) {
+        el.closest(".dcats")
+          .querySelectorAll(".dc")
+          .forEach((c) => c.classList.remove("sel"));
+        el.classList.add("sel");
+        updateBtn();
+      }
+
+      function selAmt(el) {
+        el.closest(".ag")
+          .querySelectorAll(".ab")
+          .forEach((a) => a.classList.remove("sel"));
+        el.classList.add("sel");
+        updateBtn();
+      }
+
+      function updateBtn() {
+        const amt = document.querySelector(".ab.sel");
+        const cat = document.querySelector(".dc.sel");
+        const btn = document.getElementById("dbtn");
+        if (amt && cat && btn) {
+          const catName = cat
+            .querySelector("h4")
+            .textContent.replace(/^[^\w]+/, "")
+            .trim();
+          btn.textContent = "Donate " + amt.textContent + " · " + catName;
+        }
+      }
+    </script>
+  </body>
+</html>
